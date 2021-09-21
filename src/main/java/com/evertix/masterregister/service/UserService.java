@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 
 public interface UserService {
     ResponseEntity<MessageResponse> getAllEmployeeByManager(Long id);
+    ResponseEntity<MessageResponse> getEmployeeByManager(Long employeeId);
     ResponseEntity<MessageResponse> updatePassword(LoginRequest loginRequest);
     ResponseEntity<MessageResponse> updateUser(Long id, SignUpRequest signUpRequest);
 }

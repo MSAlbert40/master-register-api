@@ -30,6 +30,14 @@ public class UserController {
         return this.userService.getAllEmployeeByManager(managerId);
     }
 
+    @GetMapping("/employee")
+    @PreAuthorize("isAuthenticated()")
+    @Operation(summary = "View Employee by Manager", description = "View Employee by Manager",
+            security = @SecurityRequirement(name = "bearerAuth"), tags = {"User"})
+    public ResponseEntity<MessageResponse> getEmployee(@RequestParam Long employeeId) {
+        return this.userService.getEmployeeByManager(employeeId);
+    }
+
     @PutMapping("/{managerId}")
     @PreAuthorize("isAuthenticated()")
     @Operation(summary = "Update User", description = "Update User",
