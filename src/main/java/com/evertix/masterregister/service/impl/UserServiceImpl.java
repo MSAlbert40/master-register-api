@@ -162,6 +162,7 @@ public class UserServiceImpl implements UserService {
         SaveUserRequest resource = modelMapper.map(user, SaveUserRequest.class);
         resource.setRole(user.getRole().getName().toString());
         resource.setWorkArea(user.getWorkArea().getName());
+        resource.setManager(user.getManager().getLastName() + ", " + user.getManager().getName());
         return resource;
     }
 

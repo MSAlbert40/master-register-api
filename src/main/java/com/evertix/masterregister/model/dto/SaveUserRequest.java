@@ -16,4 +16,5 @@ public class SaveUserRequest {
     private String address;
     private String phone;
     private String workArea;
+    private String manager;
 }

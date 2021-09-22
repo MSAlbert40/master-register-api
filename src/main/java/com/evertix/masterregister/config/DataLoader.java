@@ -2,10 +2,13 @@ package com.evertix.masterregister.config;
 
 import com.evertix.masterregister.model.Role;
 import com.evertix.masterregister.model.Schedule;
+import com.evertix.masterregister.model.Status;
 import com.evertix.masterregister.model.WorkArea;
 import com.evertix.masterregister.model.enums.ERole;
+import com.evertix.masterregister.model.enums.EStatus;
 import com.evertix.masterregister.repository.RoleRepository;
 import com.evertix.masterregister.repository.ScheduleRepository;
+import com.evertix.masterregister.repository.StatusRepository;
 import com.evertix.masterregister.repository.WorkAreaRepository;
 import org.springframework.stereotype.Component;
 
@@ -17,12 +20,14 @@ public class DataLoader {
     private final RoleRepository roleRepository;
     private final ScheduleRepository scheduleRepository;
     private final WorkAreaRepository workAreaRepository;
+    private final StatusRepository statusRepository;
 
     public DataLoader(RoleRepository roleRepository, ScheduleRepository scheduleRepository,
-                      WorkAreaRepository workAreaRepository) {
+                      WorkAreaRepository workAreaRepository, StatusRepository statusRepository) {
         this.roleRepository = roleRepository;
         this.scheduleRepository = scheduleRepository;
         this.workAreaRepository = workAreaRepository;
+        this.statusRepository = statusRepository;
         this.loadData();
     }
 
@@ -30,6 +35,15 @@ public class DataLoader {
         this.addRoles();
         this.addSchedules();
         this.addWorkArea();
+        this.addStatus();
+    }
+
+    private void addStatus() {
+        this.statusRepository.saveAll(Arrays.asList(
+           new Status(EStatus.STATUS_ABSENT),
+           new Status(EStatus.STATUS_LATE),
+           new Status(EStatus.STATUS_ATTENDANCE)
+        ));
     }
 
     private void addWorkArea() {
@@ -50,7 +64,6 @@ public class DataLoader {
 
     private void addRoles() {
         this.roleRepository.saveAll(Arrays.asList(
-           new Role(ERole.ROLE_ADMIN),
            new Role(ERole.ROLE_MANAGER),
            new Role(ERole.ROLE_EMPLOYEE)
         ));

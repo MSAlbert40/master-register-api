@@ -26,7 +26,5 @@ public class WorkArea implements Serializable {
     @Size(max = 200)
     private String name;
 
-    public WorkArea(String name) {
-        this.name = name;
-    }
+    public WorkArea(String name) { this.name = name; }
 }
