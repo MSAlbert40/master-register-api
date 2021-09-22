@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface AttendanceRepository extends JpaRepository<Attendance, Long> {
     List<Attendance> findAllByStatusNameAndEmployeeManagerId(EStatus name, Long managerId);
+    List<Attendance> findAllByStatusNameAndEmployeeId(EStatus name, Long employeeId);
 }

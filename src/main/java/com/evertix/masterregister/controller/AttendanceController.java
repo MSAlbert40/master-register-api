@@ -30,6 +30,15 @@ public class AttendanceController {
         return this.attendanceService.getAllAttendances(status, managerId);
     }
 
+    @GetMapping("/employee")
+    @PreAuthorize("isAuthenticated()")
+    @Operation(summary = "View All Attendances by Status and Employee", description = "View All Attendances by Status and Employee",
+            security = @SecurityRequirement(name = "bearerAuth"), tags = {"Attendance"})
+    public ResponseEntity<MessageResponse> getAllAttendancesByEmployee(@RequestParam Long employeeId,
+                                                                       @RequestParam String status){
+        return this.attendanceService.getAllAttendancesByEmployee(status, employeeId);
+    }
+
     @PostMapping("/add")
     @PreAuthorize("isAuthenticated()")
     @Operation(summary = "Add Attendance", description = "Add Attendance",

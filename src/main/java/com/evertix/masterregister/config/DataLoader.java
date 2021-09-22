@@ -1,15 +1,9 @@
 package com.evertix.masterregister.config;
 
-import com.evertix.masterregister.model.Role;
-import com.evertix.masterregister.model.Schedule;
-import com.evertix.masterregister.model.Status;
-import com.evertix.masterregister.model.WorkArea;
+import com.evertix.masterregister.model.*;
 import com.evertix.masterregister.model.enums.ERole;
 import com.evertix.masterregister.model.enums.EStatus;
-import com.evertix.masterregister.repository.RoleRepository;
-import com.evertix.masterregister.repository.ScheduleRepository;
-import com.evertix.masterregister.repository.StatusRepository;
-import com.evertix.masterregister.repository.WorkAreaRepository;
+import com.evertix.masterregister.repository.*;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalTime;
@@ -21,13 +15,16 @@ public class DataLoader {
     private final ScheduleRepository scheduleRepository;
     private final WorkAreaRepository workAreaRepository;
     private final StatusRepository statusRepository;
+    private final TypeRequestRepository typeRequestRepository;
 
     public DataLoader(RoleRepository roleRepository, ScheduleRepository scheduleRepository,
-                      WorkAreaRepository workAreaRepository, StatusRepository statusRepository) {
+                      WorkAreaRepository workAreaRepository, StatusRepository statusRepository,
+                      TypeRequestRepository typeRequestRepository) {
         this.roleRepository = roleRepository;
         this.scheduleRepository = scheduleRepository;
         this.workAreaRepository = workAreaRepository;
         this.statusRepository = statusRepository;
+        this.typeRequestRepository = typeRequestRepository;
         this.loadData();
     }
 
@@ -36,6 +33,19 @@ public class DataLoader {
         this.addSchedules();
         this.addWorkArea();
         this.addStatus();
+        this.addTypeRequest();
+    }
+
+    private void addTypeRequest() {
+        this.typeRequestRepository.saveAll(Arrays.asList(
+                new TypeRequest("Adelantar Vacaciones"),
+                new TypeRequest("Adelantar Sueldo"),
+                new TypeRequest("Adelantar Bono"),
+                new TypeRequest("Justificar Falta"),
+                new TypeRequest("Actualizar Datos"),
+                new TypeRequest("Aumento de Sueldo"),
+                new TypeRequest("Retiro por Enfermedad")
+        ));
     }
 
     private void addStatus() {

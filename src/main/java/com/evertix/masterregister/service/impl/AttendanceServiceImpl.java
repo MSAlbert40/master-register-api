@@ -83,6 +83,48 @@ public class AttendanceServiceImpl implements AttendanceService {
     }
 
     @Override
+    public ResponseEntity<MessageResponse> getAllAttendancesByEmployee(String status, Long employeeId) {
+        try {
+            // Identify Status
+            EStatus statusNow;
+            if (status == null) {
+                return ResponseEntity
+                        .status(HttpStatus.BAD_REQUEST)
+                        .body(MessageResponse.builder()
+                                .code(ResponseConstants.ERROR_CODE)
+                                .message("Sorry, Status not found")
+                                .build());
+            } else {
+                switch (status) {
+                    case "STATUS_ABSENT": statusNow = EStatus.STATUS_ABSENT; break;
+                    case "STATUS_LATE": statusNow = EStatus.STATUS_LATE; break;
+                    case "STATUS_ATTENDANCE": statusNow = EStatus.STATUS_ATTENDANCE; break;
+                    default: throw new RuntimeException("Sorry, Type Wallet is wrong.");
+                };
+            }
+
+            List<Attendance> attendanceList = this.attendanceRepository.findAllByStatusNameAndEmployeeId(statusNow, employeeId);
+            if(attendanceList == null || attendanceList.isEmpty()) { return this.getNotAttendanceContent(); }
+            MessageResponse response = MessageResponse.builder()
+                    .code(ResponseConstants.SUCCESS_CODE)
+                    .message(ResponseConstants.MSG_SUCCESS_CONS)
+                    .data(attendanceList)
+                    .build();
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(MessageResponse.builder()
+                            .code(ResponseConstants.ERROR_CODE)
+                            .message("Internal Error: " + sw.toString())
+                            .build());
+        }
+    }
+
+    @Override
     public ResponseEntity<MessageResponse> markAttend(Long employeeId, AttendanceRequest attendance) {
         try {
             // Valid if Employee Exists
