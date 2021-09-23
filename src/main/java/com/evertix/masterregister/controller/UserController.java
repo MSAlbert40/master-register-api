@@ -46,12 +46,4 @@ public class UserController {
                                                   @PathVariable Long managerId) {
         return this.userService.updateUser(managerId, signUpRequest);
     }
-
-    @PutMapping("/")
-    @PreAuthorize("isAuthenticated()")
-    @Operation(summary = "Change Password", description = "Change Password",
-            security = @SecurityRequirement(name = "bearerAuth"), tags = {"User"})
-    public ResponseEntity<MessageResponse> password(@RequestBody @Valid LoginRequest loginRequest) {
-        return this.userService.updatePassword(loginRequest);
-    }
 }

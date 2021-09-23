@@ -8,5 +8,6 @@ import org.springframework.http.ResponseEntity;
 
 public interface AuthService {
     ResponseEntity<MessageResponse> registerUser(SignUpRequest signUpRequest, Long scheduleId, Long workAreaId, Long managerId);
+    ResponseEntity<MessageResponse> updatePassword(LoginRequest loginRequest);
     JwtResponse authenticationUser(LoginRequest loginRequest);
 }

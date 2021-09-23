@@ -12,9 +12,11 @@ public class SaveUserRequest {
     private String name;
     private String lastName;
     private String dni;
-    private String gender;
+    private String age;
+    private Integer gender;
     private String address;
     private String phone;
+    private Integer salary;
     private String workArea;
     private String manager;
 }

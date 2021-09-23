@@ -78,41 +78,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<MessageResponse> updatePassword(LoginRequest loginRequest) {
-        try {
-            User passwordUser = userRepository.findByUsernameOrEmail(loginRequest.getUsername(), loginRequest.getUsername()).orElse(null);
-            if (passwordUser == null) {
-                return ResponseEntity
-                        .status(HttpStatus.BAD_REQUEST)
-                        .body(MessageResponse.builder()
-                                .code(ResponseConstants.ERROR_CODE)
-                                .message("Don't exists user with username or email: " + loginRequest.getUsername())
-                                .build());
-            }
-            // Change Password
-            passwordUser.setPassword(encoder.encode(loginRequest.getPassword()));
-            // Save Update
-            userRepository.save(passwordUser);
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .body(MessageResponse.builder()
-                            .code(ResponseConstants.SUCCESS_CODE)
-                            .message("Successful password change")
-                            .build());
-        } catch (Exception e) {
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            e.printStackTrace(pw);
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(MessageResponse.builder()
-                            .code(ResponseConstants.ERROR_CODE)
-                            .message("Internal Error: " + sw.toString())
-                            .build());
-        }
-    }
-
-    @Override
     public ResponseEntity<MessageResponse> updateUser(Long id, SignUpRequest signUpRequest) {
         try {
             User saveUser = this.userRepository.findById(id).orElse(null);
@@ -131,9 +96,11 @@ public class UserServiceImpl implements UserService {
             saveUser.setName(signUpRequest.getName());
             saveUser.setLastName(signUpRequest.getLastName());
             saveUser.setDni(signUpRequest.getDni());
+            saveUser.setAge(signUpRequest.getAge());
             saveUser.setGender(signUpRequest.getGender());
             saveUser.setAddress(signUpRequest.getAddress());
             saveUser.setPhone(signUpRequest.getPhone());
+            saveUser.setSalary(signUpRequest.getSalary());
             // Save Update
             saveUser = userRepository.save(saveUser);
             return ResponseEntity

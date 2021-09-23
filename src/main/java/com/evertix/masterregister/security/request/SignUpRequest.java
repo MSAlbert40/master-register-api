@@ -4,10 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Column;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 @Getter
 @Setter
@@ -46,6 +43,9 @@ public class SignUpRequest {
     @Size(max = 10, min = 8)
     private String dni;
 
+    @Min(value = 0)
+    private Integer age;
+
     @NotNull(message = "Gender cannot be null")
     @NotBlank(message = "Gender cannot be blank")
     private String gender;
@@ -62,16 +62,22 @@ public class SignUpRequest {
     @Size(max = 12, min = 9)
     private String phone;
 
-    public SignUpRequest(String username, String password, String email, String name,
-                         String lastName, String dni, String gender, String address, String phone) {
+    @Min(value = 0)
+    @Digits(fraction = 2, integer = 5)
+    private Integer salary;
+
+    public SignUpRequest(String username, String password, String email, String name, String lastName,
+                         String dni, Integer age, String gender, String address, String phone, Integer salary) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.name = name;
         this.lastName = lastName;
         this.dni = dni;
+        this.age = age;
         this.gender = gender;
         this.address = address;
         this.phone = phone;
+        this.salary = salary;
     }
 }

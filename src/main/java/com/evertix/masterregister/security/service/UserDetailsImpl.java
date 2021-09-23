@@ -27,14 +27,18 @@ public class UserDetailsImpl implements UserDetails {
 
     private final String dni;
 
+    private final Integer age;
+
     private final String gender;
 
     private final String address;
 
     private final String phone;
 
-    public UserDetailsImpl(Long id, String username, String password, String email, String name, String lastName,
-                           String dni, String gender, String address, String phone, Collection<? extends GrantedAuthority> authorities) {
+    private final Integer salary;
+
+    public UserDetailsImpl(Long id, String username, String password, String email, String name, String lastName, String dni,
+                           Integer age, String gender, String address, String phone, Integer salary, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -42,15 +46,17 @@ public class UserDetailsImpl implements UserDetails {
         this.name = name;
         this.lastName = lastName;
         this.dni = dni;
+        this.age = age;
         this.gender = gender;
         this.address = address;
         this.phone = phone;
+        this.salary = salary;
         this.authorities = authorities;
     }
 
     public static UserDetailsImpl build(User user) {
-        return new UserDetailsImpl(user.getId(), user.getUsername(), user.getPassword(), user.getEmail(), user.getName(), user.getLastName(),
-                user.getDni(), user.getGender(), user.getAddress(), user.getPhone(), Collections.singletonList(new SimpleGrantedAuthority(user.getRole().getName().toString())));
+        return new UserDetailsImpl(user.getId(), user.getUsername(), user.getPassword(), user.getEmail(), user.getName(), user.getLastName(), user.getDni(),
+                user.getAge(), user.getGender(), user.getAddress(), user.getPhone(), user.getSalary(), Collections.singletonList(new SimpleGrantedAuthority(user.getRole().getName().toString())));
     }
 
     @Override

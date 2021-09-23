@@ -8,10 +8,12 @@ import com.evertix.masterregister.security.response.JwtResponse;
 import com.evertix.masterregister.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,5 +51,11 @@ public class AuthController {
             msResponse = MessageResponse.builder().code(ResponseConstants.ERROR_CODE).message(e.getMessage()).build();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(msResponse);
         }
+    }
+
+    @PutMapping("/")
+    @Operation(summary = "Change Password", description = "Change Password", tags = {"Authentication"})
+    public ResponseEntity<MessageResponse> password(@RequestBody @Valid LoginRequest loginRequest) {
+        return this.authService.updatePassword(loginRequest);
     }
 }

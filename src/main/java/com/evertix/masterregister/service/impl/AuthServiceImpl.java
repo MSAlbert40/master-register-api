@@ -54,6 +54,9 @@ public class AuthServiceImpl implements AuthService {
     AuthenticationManager authenticationManager;
 
     @Autowired
+    PasswordEncoder encoder;
+
+    @Autowired
     JwtUtils jwtUtils;
 
     @Override
@@ -106,7 +109,7 @@ public class AuthServiceImpl implements AuthService {
 
             // Create a new User
             User createUser = new User(signUpRequest.getUsername(), passwordEncoder.encode(signUpRequest.getPassword()), signUpRequest.getEmail(), signUpRequest.getName(),
-                    signUpRequest.getLastName(), signUpRequest.getDni(), signUpRequest.getGender(), signUpRequest.getAddress(), signUpRequest.getPhone());
+                    signUpRequest.getLastName(), signUpRequest.getDni(), signUpRequest.getAge(), signUpRequest.getGender(), signUpRequest.getAddress(), signUpRequest.getPhone(), signUpRequest.getSalary());
             // Choose Role User
             Role userRole;
             if (managerId != null) { userRole = roleRepository.findByName(ERole.ROLE_EMPLOYEE)
@@ -140,6 +143,41 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    public ResponseEntity<MessageResponse> updatePassword(LoginRequest loginRequest) {
+        try {
+            User passwordUser = userRepository.findByUsernameOrEmail(loginRequest.getUsername(), loginRequest.getUsername()).orElse(null);
+            if (passwordUser == null) {
+                return ResponseEntity
+                        .status(HttpStatus.BAD_REQUEST)
+                        .body(MessageResponse.builder()
+                                .code(ResponseConstants.ERROR_CODE)
+                                .message("Don't exists user with username or email: " + loginRequest.getUsername())
+                                .build());
+            }
+            // Change Password
+            passwordUser.setPassword(encoder.encode(loginRequest.getPassword()));
+            // Save Update
+            userRepository.save(passwordUser);
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(MessageResponse.builder()
+                            .code(ResponseConstants.SUCCESS_CODE)
+                            .message("Successful password change")
+                            .build());
+        } catch (Exception e) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(MessageResponse.builder()
+                            .code(ResponseConstants.ERROR_CODE)
+                            .message("Internal Error: " + sw.toString())
+                            .build());
+        }
+    }
+
+    @Override
     public JwtResponse authenticationUser(LoginRequest loginRequest) {
         // Auth username & password
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
@@ -154,7 +192,7 @@ public class AuthServiceImpl implements AuthService {
         String roleOne = "";
         for (String rol: roles){ roleOne = roleOne.concat(rol); }
         // Get All Data User
-        return new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(), roleOne, userDetails.getName(),
-                userDetails.getLastName(), userDetails.getDni(), userDetails.getGender(), userDetails.getAddress(), userDetails.getPhone());
+        return new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(), roleOne, userDetails.getName(), userDetails.getLastName(),
+                userDetails.getDni(), userDetails.getAge(), userDetails.getGender(), userDetails.getAddress(), userDetails.getPhone(), userDetails.getSalary());
     }
 }
