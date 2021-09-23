@@ -78,6 +78,54 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public ResponseEntity<MessageResponse> getAllEmployeeByName(Long id, String name) {
+        try {
+            List<User> userList = this.userRepository.findAllByManagerIdAndName(id, name);
+            if (userList == null || userList.isEmpty()) { return this.getNotUserContent(); }
+            MessageResponse response = MessageResponse.builder()
+                    .code(ResponseConstants.SUCCESS_CODE)
+                    .message(ResponseConstants.MSG_SUCCESS_CONS)
+                    .data(userList)
+                    .build();
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(MessageResponse.builder()
+                            .code(ResponseConstants.ERROR_CODE)
+                            .message("Internal Error: " + sw.toString())
+                            .build());
+        }
+    }
+
+    @Override
+    public ResponseEntity<MessageResponse> getAllEmployeeByWorkArea(Long id, Long workAreaId) {
+        try {
+            List<User> userList = this.userRepository.findAllByManagerIdAndWorkAreaId(id, workAreaId);
+            if (userList == null || userList.isEmpty()) { return this.getNotUserContent(); }
+            MessageResponse response = MessageResponse.builder()
+                    .code(ResponseConstants.SUCCESS_CODE)
+                    .message(ResponseConstants.MSG_SUCCESS_CONS)
+                    .data(userList)
+                    .build();
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(MessageResponse.builder()
+                            .code(ResponseConstants.ERROR_CODE)
+                            .message("Internal Error: " + sw.toString())
+                            .build());
+        }
+    }
+
+    @Override
     public ResponseEntity<MessageResponse> updateUser(Long id, SignUpRequest signUpRequest) {
         try {
             User saveUser = this.userRepository.findById(id).orElse(null);
@@ -109,6 +157,39 @@ public class UserServiceImpl implements UserService {
                             .code(ResponseConstants.SUCCESS_CODE)
                             .message("Successful update")
                             .data(this.convertToResource(saveUser))
+                            .build());
+        } catch (Exception e) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(MessageResponse.builder()
+                            .code(ResponseConstants.ERROR_CODE)
+                            .message("Internal Error: " + sw.toString())
+                            .build());
+        }
+    }
+
+    @Override
+    public ResponseEntity<MessageResponse> deleteEmployee(Long id, Long employeeId) {
+        try {
+            User employee = this.userRepository.findByManagerIdAndId(id, employeeId).orElse(null);
+            if (employee == null) {
+                return ResponseEntity
+                        .status(HttpStatus.BAD_REQUEST)
+                        .body(MessageResponse.builder()
+                                .code(ResponseConstants.ERROR_CODE)
+                                .message("Don't exists employee with ID: " + employeeId)
+                                .build());
+            }
+            userRepository.delete(employee);
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(MessageResponse.builder()
+                            .code(ResponseConstants.SUCCESS_CODE)
+                            .message("Successful delete")
+                            //.data(this.convertToResource(employee))
                             .build());
         } catch (Exception e) {
             StringWriter sw = new StringWriter();

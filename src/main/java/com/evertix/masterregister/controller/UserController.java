@@ -38,12 +38,39 @@ public class UserController {
         return this.userService.getEmployeeByManager(employeeId);
     }
 
-    @PutMapping("/{managerId}")
+    @GetMapping("/{name}")
     @PreAuthorize("isAuthenticated()")
-    @Operation(summary = "Update User", description = "Update User",
+    @Operation(summary = "View Employee by Name", description = "View Employee by Name",
+            security = @SecurityRequirement(name = "bearerAuth"), tags = {"User"})
+    public ResponseEntity<MessageResponse> getAllEmployeeByName(@RequestParam Long managerId,
+                                                                @PathVariable String name){
+        return this.userService.getAllEmployeeByName(managerId, name);
+    }
+
+    @GetMapping("/workArea")
+    @PreAuthorize("isAuthenticated()")
+    @Operation(summary = "View Employee by Work Area", description = "View Employee by Work Area",
+            security = @SecurityRequirement(name = "bearerAuth"), tags = {"User"})
+    public ResponseEntity<MessageResponse> getAllEmployeeByWorkArea(@RequestParam Long managerId,
+                                                                    @RequestParam Long workAreaId){
+        return this.userService.getAllEmployeeByWorkArea(managerId, workAreaId);
+    }
+
+    @PutMapping("/{employeeId}")
+    @PreAuthorize("isAuthenticated()")
+    @Operation(summary = "Update Employee or Manager", description = "Update Employee or Manager",
             security = @SecurityRequirement(name = "bearerAuth"), tags = {"User"})
     public ResponseEntity<MessageResponse> update(@RequestBody @Valid SignUpRequest signUpRequest,
-                                                  @PathVariable Long managerId) {
-        return this.userService.updateUser(managerId, signUpRequest);
+                                                  @PathVariable Long employeeId) {
+        return this.userService.updateUser(employeeId, signUpRequest);
+    }
+
+    @DeleteMapping("/delete")
+    @PreAuthorize("isAuthenticated()")
+    @Operation(summary = "Delete Employee", description = "Delete Employee",
+            security = @SecurityRequirement(name = "bearerAuth"), tags = {"User"})
+    public ResponseEntity<MessageResponse> delete(@RequestParam Long managerId,
+                                                  @RequestParam Long employeeId){
+        return this.userService.deleteEmployee(managerId, employeeId);
     }
 }
