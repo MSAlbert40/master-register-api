@@ -19,6 +19,7 @@ public class OpenAPIConfig {
     @Bean(name = "FWalletOpenAPI")
     public OpenAPI FWalletOpenAPI() {
         // http://localhost:8080/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
+        // http://master-register.herokuapp.com/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
         return new OpenAPI().components(new Components())
                 .info(new Info().title("Master-Register API").description("Open API Documentation, implemented with Spring Boot RESTful"));
     }
