@@ -12,6 +12,6 @@ import java.util.List;
 public interface AttendanceRepository extends JpaRepository<Attendance, Long> {
     List<Attendance> findAllByDate(LocalDate date);
     List<Attendance> findAllByEmployeeId(Long employeeId);
-    List<Attendance> findAllByStatusNameAndEmployeeId(EStatus name, Long employeeId);
-    List<Attendance> findAllByStatusNameAndEmployeeManagerId(EStatus name, Long managerId);
+    //List<Attendance> findAllByStatusNameAndEmployeeId(EStatus name, Long employeeId);
+    List<Attendance> findAllByEmployeeManagerId(Long managerId);
 }

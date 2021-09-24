@@ -26,9 +26,8 @@ public class AttendanceController {
     @PreAuthorize("isAuthenticated()")
     @Operation(summary = "View All Attendances by Status and Manager", description = "View All Attendances by Status and Manager",
             security = @SecurityRequirement(name = "bearerAuth"), tags = {"Attendance"})
-    public ResponseEntity<MessageResponse> getAllAttendances(@RequestParam Long managerId,
-                                                             @RequestParam String status){
-        return this.attendanceService.getAllAttendances(status, managerId);
+    public ResponseEntity<MessageResponse> getAllAttendances(@RequestParam Long managerId){
+        return this.attendanceService.getAllAttendances(managerId);
     }
 
     @GetMapping("/date")
@@ -44,9 +43,8 @@ public class AttendanceController {
     @PreAuthorize("isAuthenticated()")
     @Operation(summary = "View All Attendances by Status and Employee", description = "View All Attendances by Status and Employee",
             security = @SecurityRequirement(name = "bearerAuth"), tags = {"Attendance"})
-    public ResponseEntity<MessageResponse> getAllAttendancesByEmployee(@RequestParam Long employeeId,
-                                                                       @RequestParam String status){
-        return this.attendanceService.getAllAttendancesByEmployee(status, employeeId);
+    public ResponseEntity<MessageResponse> getAllAttendancesByEmployee(@RequestParam Long employeeId){
+        return this.attendanceService.getAllAttendancesByEmployee(employeeId);
     }
 
     @PostMapping("/add")

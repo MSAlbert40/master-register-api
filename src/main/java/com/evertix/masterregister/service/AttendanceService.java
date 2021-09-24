@@ -7,8 +7,8 @@ import org.springframework.http.ResponseEntity;
 import java.time.LocalDate;
 
 public interface AttendanceService {
-    ResponseEntity<MessageResponse> getAllAttendances(String status, Long managerId);
+    ResponseEntity<MessageResponse> getAllAttendances(Long managerId);
     ResponseEntity<MessageResponse> getAllAttendancesByDate(LocalDate date);
-    ResponseEntity<MessageResponse> getAllAttendancesByEmployee(String status, Long employeeId);
+    ResponseEntity<MessageResponse> getAllAttendancesByEmployee(Long employeeId);
     ResponseEntity<MessageResponse> markAttend(Long employeeId, AttendanceRequest attendance);
 }

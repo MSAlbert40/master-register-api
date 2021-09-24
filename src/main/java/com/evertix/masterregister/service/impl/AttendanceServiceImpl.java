@@ -41,27 +41,9 @@ public class AttendanceServiceImpl implements AttendanceService {
     AttendanceRepository attendanceRepository;
 
     @Override
-    public ResponseEntity<MessageResponse> getAllAttendances(String status, Long managerId) {
+    public ResponseEntity<MessageResponse> getAllAttendances(Long managerId) {
         try {
-            // Identify Status
-            EStatus statusNow;
-            if (status == null) {
-                return ResponseEntity
-                        .status(HttpStatus.BAD_REQUEST)
-                        .body(MessageResponse.builder()
-                                .code(ResponseConstants.ERROR_CODE)
-                                .message("Sorry, Status not found")
-                                .build());
-            } else {
-                switch (status) {
-                    case "STATUS_ABSENT": statusNow = EStatus.STATUS_ABSENT; break;
-                    case "STATUS_LATE": statusNow = EStatus.STATUS_LATE; break;
-                    case "STATUS_ATTENDANCE": statusNow = EStatus.STATUS_ATTENDANCE; break;
-                    default: throw new RuntimeException("Sorry, Type Wallet is wrong.");
-                };
-            }
-
-            List<Attendance> attendanceList = this.attendanceRepository.findAllByStatusNameAndEmployeeManagerId(statusNow, managerId);
+            List<Attendance> attendanceList = this.attendanceRepository.findAllByEmployeeManagerId(managerId);
             if(attendanceList == null || attendanceList.isEmpty()) { return this.getNotAttendanceContent(); }
             MessageResponse response = MessageResponse.builder()
                     .code(ResponseConstants.SUCCESS_CODE)
@@ -107,27 +89,9 @@ public class AttendanceServiceImpl implements AttendanceService {
     }
 
     @Override
-    public ResponseEntity<MessageResponse> getAllAttendancesByEmployee(String status, Long employeeId) {
+    public ResponseEntity<MessageResponse> getAllAttendancesByEmployee(Long employeeId) {
         try {
-            // Identify Status
-            EStatus statusNow;
-            if (status == null) {
-                return ResponseEntity
-                        .status(HttpStatus.BAD_REQUEST)
-                        .body(MessageResponse.builder()
-                                .code(ResponseConstants.ERROR_CODE)
-                                .message("Sorry, Status not found")
-                                .build());
-            } else {
-                switch (status) {
-                    case "STATUS_ABSENT": statusNow = EStatus.STATUS_ABSENT; break;
-                    case "STATUS_LATE": statusNow = EStatus.STATUS_LATE; break;
-                    case "STATUS_ATTENDANCE": statusNow = EStatus.STATUS_ATTENDANCE; break;
-                    default: throw new RuntimeException("Sorry, Type Wallet is wrong.");
-                };
-            }
-
-            List<Attendance> attendanceList = this.attendanceRepository.findAllByStatusNameAndEmployeeId(statusNow, employeeId);
+            List<Attendance> attendanceList = this.attendanceRepository.findAllByEmployeeId(employeeId);
             if(attendanceList == null || attendanceList.isEmpty()) { return this.getNotAttendanceContent(); }
             MessageResponse response = MessageResponse.builder()
                     .code(ResponseConstants.SUCCESS_CODE)
