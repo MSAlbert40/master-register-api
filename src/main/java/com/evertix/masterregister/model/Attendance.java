@@ -7,6 +7,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -25,9 +26,17 @@ public class Attendance implements Serializable {
 
     private LocalTime time;
 
-    private Integer numHours;
+    @Min(value = 0)
+    private Integer attendance;
 
-    private Integer numDays;
+    @Min(value = 0)
+    private Integer late;
+
+    @Min(value = 0)
+    private Integer absent;
+
+    @Min(value = 0)
+    private Integer quantity;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "status_id", nullable = false)
@@ -39,10 +48,13 @@ public class Attendance implements Serializable {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User employee;
 
-    public Attendance(LocalDate date, LocalTime time, Integer numHours, Integer numDays) {
+    public Attendance(LocalDate date, LocalTime time, Integer attendance, Integer late,
+                      Integer absent, Integer quantity) {
         this.date = date;
         this.time = time;
-        this.numHours = numHours;
-        this.numDays = numDays;
+        this.attendance = attendance;
+        this.late = late;
+        this.absent = absent;
+        this.quantity = quantity;
     }
 }

@@ -12,6 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
 
 @CrossOrigin
 @Tag(name = "Attendance", description = "API is Ready")
@@ -28,6 +29,15 @@ public class AttendanceController {
     public ResponseEntity<MessageResponse> getAllAttendances(@RequestParam Long managerId,
                                                              @RequestParam String status){
         return this.attendanceService.getAllAttendances(status, managerId);
+    }
+
+    @GetMapping("/date")
+    @PreAuthorize("isAuthenticated()")
+    @Operation(summary = "View All Attendances by Date", description = "View All Attendances by Date",
+            security = @SecurityRequirement(name = "bearerAuth"), tags = {"Attendance"})
+    public ResponseEntity<MessageResponse> getAllAttendancesByDate(@RequestParam String date){
+        LocalDate nowDate = LocalDate.parse(date);
+        return this.attendanceService.getAllAttendancesByDate(nowDate);
     }
 
     @GetMapping("/employee")

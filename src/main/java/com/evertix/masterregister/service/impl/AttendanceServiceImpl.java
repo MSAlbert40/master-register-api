@@ -83,6 +83,30 @@ public class AttendanceServiceImpl implements AttendanceService {
     }
 
     @Override
+    public ResponseEntity<MessageResponse> getAllAttendancesByDate(LocalDate date) {
+        try {
+            List<Attendance> attendanceList = this.attendanceRepository.findAllByDate(date);
+            if(attendanceList == null || attendanceList.isEmpty()) { return this.getNotAttendanceContent(); }
+            MessageResponse response = MessageResponse.builder()
+                    .code(ResponseConstants.SUCCESS_CODE)
+                    .message(ResponseConstants.MSG_SUCCESS_CONS)
+                    .data(attendanceList)
+                    .build();
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(MessageResponse.builder()
+                            .code(ResponseConstants.ERROR_CODE)
+                            .message("Internal Error: " + sw.toString())
+                            .build());
+        }
+    }
+
+    @Override
     public ResponseEntity<MessageResponse> getAllAttendancesByEmployee(String status, Long employeeId) {
         try {
             // Identify Status
@@ -128,7 +152,7 @@ public class AttendanceServiceImpl implements AttendanceService {
     public ResponseEntity<MessageResponse> markAttend(Long employeeId, AttendanceRequest attendance) {
         try {
             // Valid if Employee Exists
-            User employee = userRepository.findById(employeeId).orElse(null);
+            User employee = this.userRepository.findById(employeeId).orElse(null);
             if (employee == null) {
                 return ResponseEntity
                         .status(HttpStatus.BAD_REQUEST)
@@ -148,27 +172,39 @@ public class AttendanceServiceImpl implements AttendanceService {
             long duration = Duration.between(employee.getSchedule().getTimeIn(), nowTime).toMinutes();
             long work = Duration.between(employee.getSchedule().getTimeIn(), employee.getSchedule().getTimeOut()).toMinutes();
 
-            // Identify Status
+            // List of Employee
+            List<Attendance> employeeList = this.attendanceRepository.findAllByEmployeeId(employeeId);
+
+            // Count All Attendance
             Status status = new Status();
-            int numDays = 0;
-            int numHours = (int) duration;
+            int quantity = 0;
+            int lat = 0; int abs = 0; int att = 0;
+
+            for (Attendance all : employeeList) {
+                lat = all.getLate() + lat;
+                abs = all.getAbsent() + abs;
+                att = all.getAttendance() + abs;
+            }
+
+            // Identify Status
             if (duration <= 30) {
                 status = this.statusRepository.findByName(EStatus.STATUS_ATTENDANCE).orElse(null);
-                numHours = (int) work;
-                numDays = numDays + 1;
+                att = att + 1;
+                // numHours = (int) work;
             }
             else if (duration < work) {
                 status = this.statusRepository.findByName(EStatus.STATUS_LATE).orElse(null);
-                numHours = (int) duration - 30;
-                numDays = numDays + 1;
+                lat = lat + 1;
+                // numHours = (int) duration - 30;
             }
             else if (duration > work) {
                 status = this.statusRepository.findByName(EStatus.STATUS_ABSENT).orElse(null);
-                numHours = 0;
+                abs = abs + 1;
+                // numHours = 0;
             }
 
             // Save Attendance
-            saveAttendance = new Attendance(nowDate, nowTime, numHours, numDays);
+            saveAttendance = new Attendance(nowDate, nowTime, att, lat, abs, quantity);
             saveAttendance.setStatus(status);
             saveAttendance.setEmployee(employee);
             attendanceRepository.save(saveAttendance);

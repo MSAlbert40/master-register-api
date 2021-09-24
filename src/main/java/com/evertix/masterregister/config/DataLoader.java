@@ -4,25 +4,33 @@ import com.evertix.masterregister.model.*;
 import com.evertix.masterregister.model.enums.ERole;
 import com.evertix.masterregister.model.enums.EStatus;
 import com.evertix.masterregister.repository.*;
+import com.evertix.masterregister.security.request.SignUpRequest;
+import com.evertix.masterregister.service.AuthService;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalTime;
 import java.util.Arrays;
+
+import static java.lang.Long.*;
 
 @Component
 public class DataLoader {
     private final RoleRepository roleRepository;
     private final ScheduleRepository scheduleRepository;
     private final WorkAreaRepository workAreaRepository;
+    private final AuthService authService;
+    private final UserRepository userRepository;
     private final StatusRepository statusRepository;
     private final TypeRequestRepository typeRequestRepository;
 
     public DataLoader(RoleRepository roleRepository, ScheduleRepository scheduleRepository,
-                      WorkAreaRepository workAreaRepository, StatusRepository statusRepository,
-                      TypeRequestRepository typeRequestRepository) {
+                      WorkAreaRepository workAreaRepository, AuthService authService, UserRepository userRepository,
+                      StatusRepository statusRepository, TypeRequestRepository typeRequestRepository) {
         this.roleRepository = roleRepository;
         this.scheduleRepository = scheduleRepository;
         this.workAreaRepository = workAreaRepository;
+        this.authService = authService;
+        this.userRepository = userRepository;
         this.statusRepository = statusRepository;
         this.typeRequestRepository = typeRequestRepository;
         this.loadData();
@@ -32,8 +40,15 @@ public class DataLoader {
         this.addRoles();
         this.addSchedules();
         this.addWorkArea();
+        this.addUsers();
         this.addStatus();
         this.addTypeRequest();
+    }
+
+    private void addUsers() {
+        SignUpRequest firstUser = new SignUpRequest("MSAlbert", "password", "msegovia.albert@hotmail.com", "Albert", "Mayta Segovia",
+                "754589632", 21, "Masculino", "AV. Santa Angela", "984756123", 1500);
+        this.authService.registerUser(firstUser, 1L, 1L, null);
     }
 
     private void addTypeRequest() {

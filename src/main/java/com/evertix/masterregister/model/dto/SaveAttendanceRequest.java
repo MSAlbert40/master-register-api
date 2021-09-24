@@ -11,8 +11,10 @@ import java.time.LocalTime;
 public class SaveAttendanceRequest {
     private LocalDate date;
     private LocalTime time;
-    private Integer numHours;
-    private Integer numDays;
+    private Integer attendance;
+    private Integer late;
+    private Integer absent;
+    private Integer quantity;
     private String status;
     private String manager;
 }
