@@ -73,8 +73,9 @@ public class DataLoader {
 
     private void addWorkArea() {
         this.workAreaRepository.saveAll(Arrays.asList(
-                new WorkArea("Develop"),
-                new WorkArea("RRHH")
+                new WorkArea("Ventas"),
+                new WorkArea("RRHH"),
+                new WorkArea("Producción")
         ));
     }
 

@@ -30,10 +30,6 @@ public class Request implements Serializable {
     @Size(max = 200)
     private String description;
 
-    private LocalDate date;
-
-    private BigDecimal cash;
-
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "typeRequest_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -44,9 +40,5 @@ public class Request implements Serializable {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User employee;
 
-    public Request(String description, LocalDate date, BigDecimal cash) {
-        this.description = description;
-        this.date = date;
-        this.cash = cash;
-    }
+    public Request(String description) { this.description = description; }
 }

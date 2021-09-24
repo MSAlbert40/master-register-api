@@ -15,8 +15,4 @@ public class RequestRequest {
     @NotBlank(message = "Description cannot be blank")
     @Size(max = 200)
     private String description;
-
-    private LocalDate date;
-
-    private BigDecimal cash;
 }

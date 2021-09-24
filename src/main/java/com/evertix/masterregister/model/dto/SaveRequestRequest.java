@@ -10,7 +10,5 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class SaveRequestRequest {
     private String description;
-    private LocalDate date;
-    private BigDecimal cash;
     private String typeRequest;
 }
