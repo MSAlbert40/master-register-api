@@ -12,8 +12,8 @@ public class SaveUserRequest {
     private String name;
     private String lastName;
     private String dni;
-    private String age;
-    private Integer gender;
+    private Integer age;
+    private String gender;
     private String address;
     private String phone;
     private Integer salary;
