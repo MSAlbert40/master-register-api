@@ -156,7 +156,6 @@ public class UserServiceImpl implements UserService {
                     .body(MessageResponse.builder()
                             .code(ResponseConstants.SUCCESS_CODE)
                             .message("Successful update")
-                            .data(this.convertToResource(saveUser))
                             .build());
         } catch (Exception e) {
             StringWriter sw = new StringWriter();
