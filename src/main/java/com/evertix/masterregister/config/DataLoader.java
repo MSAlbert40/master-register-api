@@ -46,9 +46,13 @@ public class DataLoader {
     }
 
     private void addUsers() {
-        SignUpRequest firstUser = new SignUpRequest("MSAlbert", "password", "msegovia.albert@hotmail.com", "Albert", "Mayta Segovia",
-                "754589632", 21, "Masculino", "AV. Santa Angela", "984756123", 1500);
+        SignUpRequest firstUser = new SignUpRequest("MSAlbert", "password", "msegovia.albert@gmail.com", "Albert", "Mayta Segovia",
+                "754584589", 21, "Masculino", "AV. Santa Angela", "984751458", 1500);
         this.authService.registerUser(firstUser, 1L, 1L, null);
+
+        SignUpRequest secondUser = new SignUpRequest("PBravo", "patrick12", "patrick.bravo@outook.com", "Patrick", "Bravo Ordoñez",
+                "758963254", 21, "Masculino", "AV. Los Jaspes", "956887425", 1500);
+        this.authService.registerUser(secondUser, 1L, 1L, null);
     }
 
     private void addTypeRequest() {
