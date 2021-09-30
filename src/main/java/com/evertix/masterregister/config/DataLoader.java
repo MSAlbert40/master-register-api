@@ -53,6 +53,10 @@ public class DataLoader {
         SignUpRequest secondUser = new SignUpRequest("PBravo", "patrick12", "patrick.bravo@outook.com", "Patrick", "Bravo Ordoñez",
                 "758963254", 21, "Masculino", "AV. Los Jaspes", "956887425", 1500);
         this.authService.registerUser(secondUser, 1L, 1L, null);
+
+        SignUpRequest mainUser = new SignUpRequest("RCerda", "rubencerda", "rubencerda@outlook.com", "Ruben", "Cerda Garcia",
+                "058741225", 40, "Masculino", "AV. Los Alamos", "98541236", 3000);
+        this.authService.registerUser(mainUser, 1L, 2L, null);
     }
 
     private void addTypeRequest() {
