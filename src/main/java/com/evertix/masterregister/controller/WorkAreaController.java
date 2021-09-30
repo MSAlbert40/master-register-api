@@ -22,7 +22,7 @@ public class WorkAreaController {
     WorkAreaService workAreaService;
 
     @GetMapping("/")
-    @Operation(summary = "View All Work Area", description = "View All Work Area"), tags = {"Work Area"})
+    @Operation(summary = "View All Work Area", description = "View All Work Area", tags = {"Work Area"})
     public ResponseEntity<MessageResponse> getAll() {
         return this.workAreaService.getAllWorkArea();
     }
