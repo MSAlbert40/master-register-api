@@ -22,9 +22,7 @@ public class TypeRequestController {
     TypeRequestService typeRequestService;
 
     @GetMapping("/")
-    @PreAuthorize("isAuthenticated()")
-    @Operation(summary = "View All Type Request", description = "View All Type Request",
-            security = @SecurityRequirement(name = "bearerAuth"), tags = {"Type Request"})
+    @Operation(summary = "View All Type Request", description = "View All Type Request", tags = {"Type Request"})
     public ResponseEntity<MessageResponse> getAll() {
         return this.typeRequestService.getAllTypeRequest();
     }
