@@ -22,9 +22,7 @@ public class ScheduleController {
     ScheduleService scheduleService;
 
     @GetMapping("/")
-    @PreAuthorize("isAuthenticated()")
-    @Operation(summary = "View All Schedule", description = "View All Schedule",
-            security = @SecurityRequirement(name = "bearerAuth"), tags = {"Schedule"})
+    @Operation(summary = "View All Schedule", description = "View All Schedule", tags = {"Schedule"})
     public ResponseEntity<MessageResponse> getAll() {
         return this.scheduleService.getAllSchedule();
     }

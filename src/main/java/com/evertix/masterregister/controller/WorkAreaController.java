@@ -22,9 +22,7 @@ public class WorkAreaController {
     WorkAreaService workAreaService;
 
     @GetMapping("/")
-    @PreAuthorize("isAuthenticated()")
-    @Operation(summary = "View All Work Area", description = "View All Work Area",
-            security = @SecurityRequirement(name = "bearerAuth"), tags = {"Work Area"})
+    @Operation(summary = "View All Work Area", description = "View All Work Area"), tags = {"Work Area"})
     public ResponseEntity<MessageResponse> getAll() {
         return this.workAreaService.getAllWorkArea();
     }
