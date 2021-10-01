@@ -88,7 +88,10 @@ public class DataLoader {
                 new Schedule(LocalTime.of(7,0,0), LocalTime.of(16,0,0)),
                 new Schedule(LocalTime.of(8,0,0), LocalTime.of(17,0,0)),
                 new Schedule(LocalTime.of(9,0,0), LocalTime.of(18,0,0)),
-                new Schedule(LocalTime.of(10,0,0), LocalTime.of(19,0,0))
+                new Schedule(LocalTime.of(10,0,0), LocalTime.of(19,0,0)),
+                new Schedule(LocalTime.of(11, 0, 0), LocalTime.of(20,0,0)),
+                new Schedule(LocalTime.of(12, 0, 0), LocalTime.of(21, 0, 0)),
+                new Schedule(LocalTime.of(13, 0, 0), LocalTime.of(22, 0, 0))
         ));
     }
 
