@@ -6,6 +6,7 @@ import com.evertix.masterregister.model.enums.EStatus;
 import com.evertix.masterregister.repository.*;
 import com.evertix.masterregister.security.request.SignUpRequest;
 import com.evertix.masterregister.service.AuthService;
+import com.evertix.masterregister.service.RequestService;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalTime;
@@ -19,18 +20,16 @@ public class DataLoader {
     private final ScheduleRepository scheduleRepository;
     private final WorkAreaRepository workAreaRepository;
     private final AuthService authService;
-    private final UserRepository userRepository;
     private final StatusRepository statusRepository;
     private final TypeRequestRepository typeRequestRepository;
 
     public DataLoader(RoleRepository roleRepository, ScheduleRepository scheduleRepository,
-                      WorkAreaRepository workAreaRepository, AuthService authService, UserRepository userRepository,
+                      WorkAreaRepository workAreaRepository, AuthService authService,
                       StatusRepository statusRepository, TypeRequestRepository typeRequestRepository) {
         this.roleRepository = roleRepository;
         this.scheduleRepository = scheduleRepository;
         this.workAreaRepository = workAreaRepository;
         this.authService = authService;
-        this.userRepository = userRepository;
         this.statusRepository = statusRepository;
         this.typeRequestRepository = typeRequestRepository;
         this.loadData();
@@ -47,12 +46,25 @@ public class DataLoader {
 
     private void addUsers() {
         SignUpRequest firstUser = new SignUpRequest("MSAlbert", "password", "msegovia.albert@gmail.com", "Albert", "Mayta Segovia",
-                "754584589", 21, "Masculino", "AV. Santa Angela", "984751458", 1500);
+                "75458458", 21, "Masculino", "AV. Santa Angela", "984751458", 1500);
         this.authService.registerUser(firstUser, 1L, 1L, null);
 
         SignUpRequest secondUser = new SignUpRequest("PBravo", "patrick12", "patrick.bravo@outook.com", "Patrick", "Bravo Ordoñez",
-                "758963254", 21, "Masculino", "AV. Los Jaspes", "956887425", 1500);
+                "75896325", 21, "Masculino", "AV. Los Jaspes", "956887425", 1500);
         this.authService.registerUser(secondUser, 1L, 1L, null);
+
+        // Add Employees
+        SignUpRequest firstEmployee = new SignUpRequest("KLFernanda", "password", "kloayza.fernanda@gmail.com", "Karen", "Kuylen Loayza",
+                "74856953", 25, "Femenino", "AV. Las Palmeras", "975159458", 1400);
+        this.authService.registerUser(firstEmployee, 3L, 2L, 1L);
+
+        SignUpRequest secondEmployee = new SignUpRequest("SHDaniel", "password", "shuaman.daniel@hotmail.com", "Daniel", "Sanchez Huaman",
+                "74789925", 24, "Masculino", "AV. Sotomayor crd. 4", "947859458", 1600);
+        this.authService.registerUser(secondEmployee, 2L, 1L, 1L);
+
+        SignUpRequest thirdEmployee = new SignUpRequest("ZPMiguel", "password", "zparazzi.miguel@outlook.com", "Miguel", "Zarate Parazzi",
+                "75891523", 23, "Maculino", "AV. Aire cdr. 5", "974859658", 1500);
+        this.authService.registerUser(thirdEmployee, 4L, 3L, 1L);
     }
 
     private void addTypeRequest() {
